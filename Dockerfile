@@ -33,4 +33,4 @@ RUN chown -R web:web /hod-app
 
 EXPOSE 4567
 USER web
-CMD ["/bin/sh", "-c", "cd /hod-app && ruby ./server.rb"]
+ENTRYPOINT ["/bin/sh", "-c", "cd /hod-app && ruby ./server.rb"]
