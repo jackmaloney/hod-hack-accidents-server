@@ -1,14 +1,34 @@
 require 'sinatra'
 require 'json'
 require_relative "lib/geocode_helper"
+require 'find'
+require 'exifr'
+require 'tilt/haml'
 
 set :bind, '0.0.0.0'
 
 before '/' do
-  content_type :json
+end
+
+get '/scan' do
+  content_type :html
+  dir = Dir.pwd + '/public/images'
+  image_list = {}
+  Find.find(dir) do |file|
+    if file =~ /.jpg$/i
+      shortname = file.split("/").last
+      longitude = EXIFR::JPEG.new(file).gps.longitude
+      latitude = EXIFR::JPEG.new(file).gps.latitude
+      GH = Geocode_helper.new latitude, longitude
+      image_list[file] = {:longitude => longitude, :latitude => latitude, :name => shortname, :info => GH.get_address_data.inspect}
+    end
+    puts image_list.inspect
+  end
+  haml :show_pics, :locals => {:list => image_list}
 end
 
 get '/' do
+  content_type :json
   data = {
     :status => "OK",
     :data => "Thank you for getting at " + Time.now.to_s
@@ -17,6 +37,7 @@ get '/' do
 end
 
 post '/' do
+  content_type :json
   data = {
     :status => "OK",
     :timestamp => Time.now.to_s

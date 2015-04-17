@@ -1,0 +1,8 @@
+%h1 This is showpics
+.image_list
+  - list.each do |image|
+    %img{:src => "/images/"+image[1][:name], :width=>500}
+    .caption{:style => "font-size:2em;font-weight:bold"}
+      =image[1][:info]
+   
+    

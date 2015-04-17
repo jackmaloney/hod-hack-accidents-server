@@ -3,4 +3,5 @@ gem 'sinatra'
 gem "geocoder"
 gem "rspec"
 gem "mini_magick"
-gem 'rtesseract', '~> 1.2.6'
+gem 'exifr'
+gem 'haml'
