@@ -17,9 +17,11 @@ end
 post '/' do
   data = {
     :status => "OK",
-    :data => "Thank you for posting at " + Time.now.to_s
+    :timestamp => Time.now.to_s
   }
   if params["latitude"] and params["longitude"]
+    data[:latitude] = params["latitude"]
+    data[:longitude] = params["longitude"]
     GH = Geocode_helper.new params["latitude"], params["longitude"]
     data[:address_data] = GH.get_address_data
   end
