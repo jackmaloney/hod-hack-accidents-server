@@ -2,6 +2,8 @@ require 'sinatra'
 require 'json'
 require_relative "lib/geocode_helper"
 
+set :bind, '0.0.0.0'
+
 before '/' do
   content_type :json
 end
