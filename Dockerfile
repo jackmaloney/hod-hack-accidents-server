@@ -8,7 +8,12 @@ RUN apt-get -y install wget build-essential zlib1g-dev libssl-dev \
     tar xzf ruby-2.2.0.tar.gz && \
     cd ruby-2.2.0 && ./configure --enable-shared --prefix=/usr && \
     make && make install && cd .. && rm -rf ruby-2.2.0*
+
+# Don't want to do this - app should include dependancies...
 # RUN gem install bundler
+
+# Install some troubleshooting tools:
+RUN apt-get -y install net-tools
 
 ADD ./ /hod-app/
 
@@ -27,4 +32,5 @@ USER root
 RUN chown -R web:web /hod-app
 
 EXPOSE 4567
-CMD ["/bin/sh", "-c", "su - web -c cd /hod-app && ruby ./server.rb"]
+USER web
+CMD ["/bin/sh", "-c", "cd /hod-app && ruby ./server.rb"]
